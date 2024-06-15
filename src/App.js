@@ -1,24 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+
+
 
 function App() {
+
+  const [cards, setCards] = useState([]);
+
+  const fetchData = async () => {
+    let a = await fetch("https://jsonplaceholder.typicode.com/posts")
+    let data = await a.json();
+    setCards(data);
+    console.log(data)
+  }
+
+
+  useEffect(() => {
+    fetchData();
+  })
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div className="container">
+        {cards.map((card) => {
+          return <div key={card.id} className="card">
+            <h1>{card.title} </h1>
+            <p> {card.body}</p>
+            <span>By:  UserId:{card.userId} </span>
+          </div>
+        })}
+      </div>
+
+    </>
   );
 }
 
